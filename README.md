@@ -53,7 +53,7 @@ javac MarkdownToHtml.java
 java MarkdownToHtml parse example.md -o output.html
 ```
 
-churka-example.html:
+### output.html:
 
 ```html
 <b>Lorem ipsum dolor sit amet</b>, consectetur adipiscing elit.
