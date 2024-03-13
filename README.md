@@ -1,7 +1,5 @@
 # Markdown to HTML Parser
 
-## Lannisters always pay their debts
-
 ## Application Description
 
 **The application takes a path to a text file with Markdown markup and generates an HTML markup fragment from it.**
