@@ -62,3 +62,7 @@ vulputate, leo purus convallis ligula,<pre>non finibus nulla</pre>enim
 ut mauris. <code>Phasellus sed augue aliquet,</code> hendrerit dui in,
 suscipit <i>turpis.</i> Vestibulum <b>aliquet sollicitudin tellus</b>
 ```
+
+## Revert Commit
+
+[Revert Commit](https://github.com/Rembqq/SDM/commit/d4753f738b662a3d0e2d47a2814963ebaa5decd1)
