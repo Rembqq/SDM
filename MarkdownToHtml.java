@@ -1,3 +1,4 @@
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -7,7 +8,6 @@ import java.io.IOException;
 public class MarkdownToHtml {
 
     public static void main(String[] args) {
-        // Перевірка наявності аргументів
         if (args.length != 4 || !args[0].equals("parse") || !args[2].equals("-o")) {
             System.err.println("Usage: parse <path> -o <path>");
             System.exit(1);
@@ -17,45 +17,60 @@ public class MarkdownToHtml {
         String mdFilePath = args[1];
         String htmlFilePath = args[3];
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(mdFilePath));
-             BufferedWriter writer = new BufferedWriter(new FileWriter(htmlFilePath))) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Обробка рядків Markdown
-                String htmlLine = parseMarkdown(line);
-                writer.write(htmlLine);
-                writer.newLine();
+        try {
+            String markdownText = readMarkdownFile(mdFilePath);
+            String htmlText = convertToHtml(markdownText);
+            if (htmlFilePath != null) {
+                writeHtmlToFile(htmlText, htmlFilePath);
+            } else {
+                System.out.println(htmlText);
             }
-
-            System.out.println("Markdown successfully parsed to HTML.");
-
         } catch (IOException e) {
-            System.err.println("Error reading or writing files:");
-            e.printStackTrace(System.err);
+            System.err.println("Error reading or writing file: " + e.getMessage());
+            System.exit(1);
+        } catch (InvalidMarkdownException e) {
+            System.err.println("Error: invalid markdown " + e.getMessage());
             System.exit(1);
         }
     }
 
-    private static String parseMarkdown(String markdown) {
-        // Простий парсер - приклад
-        String html = markdown;
-
-        // Обробка заголовків
-        html = html.replaceAll("^# (.*)$", "<h1>$1</h1>");
-        html = html.replaceAll("^## (.*)$", "<h2>$1</h2>");
-        html = html.replaceAll("^### (.*)$", "<h3>$1</h3>");
-
-        // Обробка списків
-        html = html.replaceAll("^\\* (.*)$", "<li>$1</li>");
-        if (html.startsWith("<li>")) {
-            html = "<ul>" + html + "</ul>";
+    private static String readMarkdownFile(String inputFile) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
         }
+        return sb.toString();
+    }
 
-        // Обробка курсиву та жирного тексту
-        html = html.replaceAll("\\*\\*(.*?)\\*\\*", "<strong>$1</strong>");
-        html = html.replaceAll("\\*(.*?)\\*", "<em>$1</em>");
+    private static void writeHtmlToFile(String htmlText, String outputFile) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+            writer.write(htmlText);
+        }
+    }
 
-        return html;
+    private static String convertToHtml(String markdownText) throws InvalidMarkdownException {
+
+
+        // Обробка жирного тексту
+        markdownText = markdownText.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
+        // Обробка курсивного тексту
+        markdownText = markdownText.replaceAll("\\_(.*?)\\_", "<i>$1</i>");
+        // Обробка преформатованого тексту
+        markdownText = markdownText.replaceAll("(?s)```(.*?)```", "<pre>$1</pre>");
+        // Обробка моноширинного тексту
+        markdownText = markdownText.replaceAll("\\`(.*?)\\`", "<code>$1</code>");
+        // Обробка параграфів
+        markdownText = markdownText.replaceAll("(?m)\\n\\s*\\n|\\n{2,}", "</p>\n\n<p>");
+
+        return markdownText;
+    }
+
+    static class InvalidMarkdownException extends Exception {
+        public InvalidMarkdownException(String message) {
+            super(message);
+        }
     }
 }
