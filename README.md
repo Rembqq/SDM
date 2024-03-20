@@ -46,11 +46,11 @@ suscipit _turpis._ Vestibulum **aliquet sollicitudin tellus**
 Parse it:
 
 ```
-javac src.main.MarkdownToHtml.java
+javac src/main/MarkdownToHtml.java
 ```
 
 ```
-java src.main.MarkdownToHtml parse example.md -o output.html
+java src/main/MarkdownToHtml parse example.md -o output.html
 ```
 
 ### output.html:
