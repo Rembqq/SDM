@@ -9,18 +9,28 @@ import java.io.IOException;
 public class MarkdownToHtml {
 
     public static void main(String[] args) {
-        if (args.length != 4 || !args[0].equals("parse") || !args[2].equals("-o")) {
-            System.err.println("Usage: parse <path> -o <path>");
+        if ((args.length < 2 || args.length > 5 || args.length == 3) ||
+                !args[0].equals("parse") || !args[2].equals("-o")) {
+            System.err.println("Usage: \"parse <path> -o <path>\"" +
+                                "\n or \"parse <path>\"" +
+                                "\n or \"parse <path> -o <path> --format=<md/html>\"");
             System.exit(1);
         }
 
         // Отримання шляхів до файлів
         String mdFilePath = args[1];
         String htmlFilePath = args[3];
+        String format;
+        if(args.length == 5) {
+            format = args[4].replaceAll("(?<=--format=).+", "");
+        }
 
         try {
             String markdownText = readMarkdownFile(mdFilePath);
             String htmlText = convertToHtml(markdownText);
+
+            System.out.print("\033[7m" + markdownText + "\033[0m");
+
             if (htmlFilePath != null) {
                 writeHtmlToFile(htmlText, htmlFilePath);
             } else {
