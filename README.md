@@ -22,11 +22,11 @@ Download Java SDK from the [official website](https://www.oracle.com/java/techno
 `Open a terminal and enter the following commands to run the program:`
 
 ```
-javac src.main.MarkdownToHtml.java
+javac src/main/MarkdownToHtml.java
 ```
 
 ```
-java src.main.MarkdownToHtml parse <path_to_md_file> -o <path_to_html_file>
+java src.main.MarkdownToHtml <path_to_md_file> --out <path_to_new_file>
 ```
 
 ## Example
@@ -50,7 +50,7 @@ javac src/main/MarkdownToHtml.java
 ```
 
 ```
-java src/main/MarkdownToHtml parse example.md -o output.html
+java src/main/MarkdownToHtml example.md --out output.html
 ```
 
 ### output.html:
