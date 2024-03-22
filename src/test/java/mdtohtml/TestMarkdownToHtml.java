@@ -19,7 +19,7 @@ public class TestMarkdownToHtml {
     public void testItalics() throws mdtohtml.MarkdownToHtml.InvalidMarkdownException{
 
         String MarkdownText = "Це правильний markdown текст _без закриваючих тегів_";
-        String expectedHtml = "<p>Це правильний markdown текст <i>без закриваючих тегів";
+        String expectedHtml = "<p>Це правильний markdown текст <i>без закриваючих тегів</i></p>";
 
         //Assert
         Assert.assertEquals(expectedHtml, mdtohtml.MarkdownToHtml.convertToHtml(MarkdownText));
