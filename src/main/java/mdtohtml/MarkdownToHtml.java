@@ -1,4 +1,4 @@
-package src.main;
+package mdtohtml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -92,24 +92,25 @@ public class MarkdownToHtml {
         }
     }
 
-    private static String convertToHtml(String markdownText) throws InvalidMarkdownException {
+    public static String convertToHtml(String markdownText) throws InvalidMarkdownException {
 
 
         // Обробка жирного тексту
-        markdownText = markdownText.replaceAll("\\*\\*(.*?)\\*\\*", "<b>$1</b>");
+        markdownText = markdownText.replaceAll("\\*\\*(.+?)\\*\\*", "<b>$1</b>");
         // Обробка курсивного тексту
-        markdownText = markdownText.replaceAll("\\_(.*?)\\_", "<i>$1</i>");
+        markdownText = markdownText.replaceAll("\\_(.+?)\\_", "<i>$1</i>");
         // Обробка преформатованого тексту
-        markdownText = markdownText.replaceAll("(?s)```(.*?)```", "<pre>$1</pre>");
+        markdownText = markdownText.replaceAll("(?s)```(.+?)```", "<pre>$1</pre>");
         // Обробка моноширинного тексту
-        markdownText = markdownText.replaceAll("\\`(.*?)\\`", "<code>$1</code>");
+        markdownText = markdownText.replaceAll("\\`(.+?)\\`", "<code>$1</code>");
         // Обробка параграфів
-        markdownText = markdownText.replaceAll("(?m)\\n\\s*\\n|\\n{2,}", "</p>\n\n<p>");
+
+        markdownText = markdownText.replaceAll("(?s)(?<=\\n|^)(.+?)(?=\\n\\n|$)", "<p>$1</p>");
 
         return markdownText;
     }
 
-    static class InvalidMarkdownException extends Exception {
+    public static class InvalidMarkdownException extends Exception {
         public InvalidMarkdownException(String message) {
             super(message);
         }
